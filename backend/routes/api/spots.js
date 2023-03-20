@@ -169,4 +169,32 @@ router.get('/:spotId', async (req, res) => {
 })
 
 
+router.post('/:spotId/images', requireAuth, async (req, res, next) => {
+    const {spotId} = req.params;
+    const userId = req.user.id;
+    const {url, preview} = req.body;
+
+    const spot = await Spot.findByPk(spotId)
+    if (!spot) {
+        res.status(404).json({message: "Spot couldn't be found"})
+    }
+    const spotJson = spot.toJSON();
+    if (spotJson.ownerId !== userId) {
+        const err = new Error("Spot must belong to the current user");
+        return next(err)
+    }
+    const newImg = await SpotImage.create({
+        spotId,
+        url,
+        preview,
+    })
+    const img = newImg.toJSON()
+    delete img.spotId;
+    delete img.updatedAt;
+    delete img.createdAt;
+
+    res.status(200).json(img)
+})
+
+
 module.exports = router;
