@@ -4,7 +4,7 @@ const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { Spot, Review, SpotImage } = require('../../db/models');
+const { Spot, Review, SpotImage, User } = require('../../db/models');
 
 const validateSpot = [
     check('address')
@@ -114,7 +114,7 @@ router.get('/current', requireAuth, async (req, res) => {
 })
 
 
-router.post('/', requireAuth, validateSpot, async (req, res, next) => {
+router.post('/', requireAuth, validateSpot, async (req, res) => {
     const {address, city, state, country, lat, lng, name, description, price} = req.body
 
     const spot = await Spot.create({
@@ -130,6 +130,42 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
         price
     })
     res.status(201).json(spot)
+})
+
+
+router.get('/:spotId', async (req, res) => {
+    const spot = await Spot.findByPk(req.params.spotId, {
+        include: [
+            {
+                model: SpotImage,
+                attributes: ['id', 'url', 'preview']
+            },
+            {
+                model: User,
+                as: 'Owner',
+                attributes: ['id', 'firstName', 'lastName']
+            },
+            {
+                model: Review
+            }
+        ]
+    })
+    if (!spot) {
+        return res.status(404).json({message: "Spot couldn't be found"})
+    }
+    const spotJson = spot.toJSON()
+    spotJson.numReviews = spotJson.Reviews.length;
+    let sum = 0;
+    let count = 0;
+    spotJson.Reviews.forEach(review => {
+        count++;
+        sum += review.stars;
+    })
+    let avg = sum / count;
+    spotJson.avgStarRating = avg;
+    delete spotJson.Reviews;
+
+    res.status(200).json(spotJson)
 })
 
 
