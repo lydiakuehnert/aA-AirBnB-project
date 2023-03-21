@@ -7,6 +7,16 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { Spot, Review, ReviewImage, User, SpotImage } = require('../../db/models');
 
 
+const validateReview = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .withMessage('Review text is required'),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors
+];
+
 router.get('/current', requireAuth, async (req, res) => {
 
     const reviews = await Review.findAll({
@@ -56,7 +66,6 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     const reviewJson = review.toJSON();
     if (reviewJson.userId !== userId) {
         const err = new Error("Review must belong to the current user");
-        err.status = 404
         return next(err)
     }
     
@@ -75,7 +84,43 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 })
 
 
+router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
+    const { reviewId } = req.params;
+    const userId = req.user.id;
+    const { review, stars } = req.body;
+    const reviewEdit = await Review.findByPk(reviewId)
+    if (!reviewEdit) {
+        return res.status(404).json({ message: "Review couldn't be found" })
+    }
+    const reviewJson = reviewEdit.toJSON();
+    if (reviewJson.userId !== userId) {
+        const err = new Error("Review must belong to the current user");
+        return next(err)
+    }
 
+    reviewEdit.review = review;
+    reviewEdit.stars = stars;
+
+    res.status(200).json(reviewEdit)
+})
+
+
+router.delete('/:reviewId', requireAuth, async (req, res, next) => {
+    const { reviewId } = req.params;
+    const userId = req.user.id;
+    const review = await Review.findByPk(reviewId)
+    if (!review) {
+        return res.status(404).json({ message: "Review couldn't be found" })
+    }
+    const reviewJson = review.toJSON();
+    if (reviewJson.userId !== userId) {
+        const err = new Error("Review must belong to the current user");
+        return next(err)
+    }
+    await review.destroy()
+
+    res.status(200).json({ message: "Successfully deleted" })
+})
 
 
 
