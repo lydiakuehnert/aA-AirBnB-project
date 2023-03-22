@@ -50,10 +50,25 @@ const validateReview = [
 
 router.get('/', async (req, res) => {
 
+    let {size, page, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query;
+
+    page = parseInt(page);
+    size = parseInt(size)
+
+    if (Number.isNaN(page) || page < 0) page = 1;
+    if (Number.isNaN(size) || size < 0) size = 2;
+    if (size > 10) size = 10;
+    const offset = size * (page - 1);
+
+    const pagination = {};
+    pagination.limit = size;
+    pagination.offset = offset;
+
+
     const spots = await Spot.findAll({
         include: [
             { model: SpotImage },
-            { model : Review }
+            { model: Review }
         ]
     });
 
