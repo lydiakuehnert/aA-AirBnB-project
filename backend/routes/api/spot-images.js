@@ -19,6 +19,7 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
     const imageJson = image.toJSON();
     if (imageJson.Spot.ownerId !== userId) {
         const err = new Error("Spot must belong to the current user")
+        err.status = 403;
         return next(err)
     }
 

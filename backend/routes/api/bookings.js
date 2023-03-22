@@ -49,6 +49,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
     const bookingJson = booking.toJSON();
     if (bookingJson.userId !== userId) {
         const err = new Error("Booking must belong to the current user");
+        err.status = 403;
         return next(err)
     }
 
@@ -117,6 +118,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     console.log(bookingJson.Spot.ownerId)
     if (bookingJson.userId !== userId && bookingJson.Spot.ownerId !== userId) {
         const err = new Error("Booking must belong to the current user");
+        err.status = 403;
         return next(err)
     }
 
