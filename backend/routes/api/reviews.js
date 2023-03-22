@@ -66,6 +66,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     const reviewJson = review.toJSON();
     if (reviewJson.userId !== userId) {
         const err = new Error("Review must belong to the current user");
+        err.status = 403;
         return next(err)
     }
     
@@ -95,6 +96,7 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
     const reviewJson = reviewEdit.toJSON();
     if (reviewJson.userId !== userId) {
         const err = new Error("Review must belong to the current user");
+        err.status = 403;
         return next(err)
     }
 
@@ -117,6 +119,7 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
     const reviewJson = review.toJSON();
     if (reviewJson.userId !== userId) {
         const err = new Error("Review must belong to the current user");
+        err.status = 403;
         return next(err)
     }
     await review.destroy()

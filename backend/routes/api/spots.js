@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { Op } = require("sequelize");
 
 const { requireAuth } = require('../../utils/auth');
 const { check } = require('express-validator');
@@ -48,13 +49,101 @@ const validateReview = [
 ];
 
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
+
+    let {size, page, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query;
+
+    if (page < 1) {
+        const err = new Error("Bad Request")
+        err.errors = "Page must be greater than or equal to 1"
+        err.status = 400;
+        next(err)
+    }
+    if (size < 1) {
+        const err = new Error("Bad Request")
+        err.errors = "Size must be greater than or equal to 1"
+        err.status = 400;
+        next(err)
+    }
+    if (Number.isNaN(maxLat)) {
+        const err = new Error("Bad Request")
+        err.errors = "Maximum latitude is invalid"
+        err.status = 400;
+        next(err)
+    }
+    if (Number.isNaN(minLat)) {
+        const err = new Error("Bad Request")
+        err.errors = "Minimum latitude is invalid"
+        err.status = 400;
+        next(err)
+    }
+    if (Number.isNaN(maxLng)) {
+        const err = new Error("Bad Request")
+        err.errors = "Maximum longitude is invalid"
+        err.status = 400;
+        next(err)
+    }
+    if (Number.isNaN(minLng)) {
+        const err = new Error("Bad Request")
+        err.errors = "Minimum longitude is invalid"
+        err.status = 400;
+        next(err)
+    }
+    if (minPrice < 0) {
+        const err = new Error("Bad Request")
+        err.errors = "Minimum price must be greater than or equal to 0"
+        err.status = 400;
+        next(err)
+    }
+    if (maxPrice < 0) {
+        const err = new Error("Bad Request")
+        err.errors = "Maximum price must be greater than or equal to 0"
+        err.status = 400;
+        next(err)
+    }
+
+    page = parseInt(page);
+    size = parseInt(size)
+
+    if (Number.isNaN(page) || page < 1) page = 1;
+    if (Number.isNaN(size) || size < 1) size = 20;
+    if (page > 10) page = 10;
+    if (size > 20) size = 20;
+    const offset = size * (page - 1);
+
+    const pagination = {};
+    pagination.limit = size;
+    pagination.offset = offset;
+
+
+    let where = {};
+    if (minLat) {
+        where.lat = {[Op.gte]: minLat}
+    }
+    if (maxLat) {
+        where.lat = { [Op.lte]: maxLat }
+    }
+    if (minLng) {
+        where.lng = { [Op.gte]: minLng }
+    }
+    if (maxLng) {
+        where.lng = { [Op.lte]: maxLng }
+    }
+    if (minPrice) {
+        where.price = { [Op.gte]: minPrice }
+    }
+    if (maxPrice) {
+        where.price = { [Op.lte]: maxPrice }
+    }
+
 
     const spots = await Spot.findAll({
+        where,
         include: [
             { model: SpotImage },
-            { model : Review }
-        ]
+            { model: Review }
+        ],
+        ...pagination
     });
 
     const spotsList = []
@@ -80,8 +169,8 @@ router.get('/', async (req, res) => {
         if (!spot.Reviews.length) spot.avgRating = 'no average rating'
         delete spot.Reviews
     })
-    
-    res.status(200).json({Spots: spotsList})
+
+    res.status(200).json({Spots: spotsList, page, size})
 })
 
 
@@ -192,6 +281,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     const spotJson = spot.toJSON();
     if (spotJson.ownerId !== userId) {
         const err = new Error("Spot must belong to the current user");
+        err.status = 403;
         return next(err)
     }
     const newImg = await SpotImage.create({
@@ -219,6 +309,7 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
     const spotJson = spot.toJSON();
     if (spotJson.ownerId !== userId) {
         const err = new Error("Spot must belong to the current user");
+        err.status = 403;
         return next(err)
     }
 
@@ -248,6 +339,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
     const spotJson = spot.toJSON();
     if (spotJson.ownerId !== userId) {
         const err = new Error("Spot must belong to the current user");
+        err.status = 403;
         return next(err)
     }
     await spot.destroy()
@@ -315,6 +407,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
     const spotJson = spot.toJSON();
     if (spotJson.ownerId === userId) {
         const err = new Error("Spot must not belong to the current user");
+        err.status = 403;
         return next(err)
     }
 
