@@ -81,7 +81,12 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
         url
     })
 
-    res.status(200).json(newImg)
+    const imgJson = newImg.toJSON();
+    delete imgJson.reviewId;
+    delete imgJson.updatedAt;
+    delete imgJson.createdAt;
+
+    res.status(200).json(imgJson)
 })
 
 
