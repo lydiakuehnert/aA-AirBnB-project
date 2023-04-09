@@ -19,7 +19,13 @@ export default function OneSpot() {
 
     return (
         <div>
-            {spot.id}
+            <h1>{spot.name}</h1>
+            <h2>{spot.city}, {spot.state}, {spot.country}</h2>
+            <div>
+                {spot.SpotImages && spot.SpotImages.map(img => (
+                    <img key={img.id} src={img.url}></img>
+                ))}
+            </div>
         </div>
     )
 }
