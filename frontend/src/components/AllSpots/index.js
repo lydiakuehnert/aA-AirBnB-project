@@ -17,7 +17,7 @@ export default function AllSpots() {
     return (
         <div className="all-spots">
             {spots.length > 0 && spots.map(spot => (
-                <SpotCard spot={spot}/>
+                <SpotCard key={spot.id} spot={spot}/>
             ))}
         </div>
     )
