@@ -47,6 +47,14 @@ export const createSpotThunk = (payload) => async dispatch => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(payload)
     })
+    for (let i = 0; i < payload.spotImg.length; i++) {
+        let img = payload.spotImg[i]
+        await fetch(`/api/spots/${payload.id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(img)
+        })
+    }
 
     if (res.ok) {
         const spot = await res.json();
@@ -54,6 +62,7 @@ export const createSpotThunk = (payload) => async dispatch => {
         return spot;
     }
 }
+
 
 const initialState = {allSpots: {}, singleSpot: {}};
 

@@ -14,7 +14,15 @@ function SpotForm({spot, formType}) {
     const [lng, setLng] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
+    const [url1, setUrl1] = useState("")
+    const [url2, setUrl2] = useState("")
+    const [url3, setUrl3] = useState("")
+    const [url4, setUrl4] = useState("")
+    const [url5, setUrl5] = useState("")
+    const [spotImg, setSpotImg] = useState([]);
 
+
+    // setSpotImg(oldArr => [...oldArr, { url: e.target.value, preview: false }])
     // const [errors, setErrors] = useState({})
 
     const history = useHistory();
@@ -42,7 +50,8 @@ function SpotForm({spot, formType}) {
             lng,
             name,
             description,
-            price
+            price,
+            spotImg
         }
 
         await dispatch(createSpotThunk(newSpot))
@@ -162,33 +171,33 @@ function SpotForm({spot, formType}) {
                 <p>Submit a link to at least one photo to publish your spot.</p>
                 <input
                     type="text"
-                    // value={}
+                    value={url1}
                     placeholder="Preview Image URL"
-                    // onChange={e => setPrice(e.target.value)}
+                    onChange={e => setUrl1(e.target.value)}
                 />
                 <input
                     type="text"
-                    // value={}
+                    value={url2}
                     placeholder="Image URL"
-                // onChange={e => setPrice(e.target.value)}
+                    onChange={e => setUrl2(e.target.value)}
                 />
                 <input
                     type="text"
-                    // value={}
+                    value={url3}
                     placeholder="Image URL"
-                // onChange={e => setPrice(e.target.value)}
+                    onChange={e => setUrl3(e.target.value)}
                 />
                 <input
                     type="text"
-                    // value={}
+                    value={url4}
                     placeholder="Image URL"
-                // onChange={e => setPrice(e.target.value)}
+                    onChange={e => setUrl4(e.target.value)}
                 />
                 <input
                     type="text"
-                    // value={}
+                    value={url5}
                     placeholder="Image URL"
-                // onChange={e => setPrice(e.target.value)}
+                    onChange={e => setUrl5(e.target.value)}
                 />
             </section>
             <button
