@@ -19,13 +19,31 @@ export default function OneSpot() {
 
     return (
         <div>
-            <h1>{spot.name}</h1>
-            <h2>{spot.city}, {spot.state}, {spot.country}</h2>
-            <div>
-                {spot.SpotImages && spot.SpotImages.map(img => (
-                    <img key={img.id} src={img.url}></img>
-                ))}
-            </div>
+            <div className="spot-detail-box">
+                <h1>{spot.name}</h1>
+                <h2>{spot.city}, {spot.state}, {spot.country}</h2>
+                <div className="spot-img-box">
+                    {spot.SpotImages && spot.SpotImages.slice(0,5).map(img => (
+                        <img key={img.id} src={img.url}></img>
+                    ))}
+                </div>
+                <h1>Hosted by {spot.Owner && spot.Owner.firstName} {spot.Owner && spot.Owner.lastName}</h1> 
+                <p>{spot.description}</p>
+                <div className="callout-info-box">
+                    <div>
+                        <span>
+                            <h2>${spot.price}</h2>
+                            <h3>night</h3>
+                        </span>
+                        <h3>
+                            <i className="fa-solid fa-star"></i>{spot.avgStarRating === "no average rating" ? "New" : spot.avgStarRating} - {spot.numReviews} reviews
+                        </h3>
+                    </div>
+                    <button onClick={() => alert("Feature Coming Soon...")}>Reserve</button>
+                </div> 
+            </div> 
+            <div className="review-detail-box">
+            </div>     
         </div>
     )
 }
