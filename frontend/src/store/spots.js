@@ -1,5 +1,6 @@
 const GET_SPOTS = "spots/getSpots";
 const GET_SPOT = "spots/getSpot";
+const CREATE_SPOT = "spots/createSpot"
 
 const getSpotAction = (spot) => {
     return {
@@ -15,8 +16,15 @@ const getSpotsAction = (spots) => {
     }
 };
 
+const createSpotAction = (spot) => {
+    return {
+        type: CREATE_SPOT,
+        spot
+    }
+}
+
 export const getSpotThunk = (spotId) => async dispatch => {
-    const res = await fetch (`/api/spots/${spotId}`);
+    const res = await fetch(`/api/spots/${spotId}`);
 
     if (res.ok) {
         const spot = await res.json()
@@ -33,6 +41,20 @@ export const getSpotsThunk = () => async dispatch => {
     }
 };
 
+export const createSpotThunk = (payload) => async dispatch => {
+    const res = await fetch('/api/spots', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+    })
+
+    if (res.ok) {
+        const spot = await res.json();
+        dispatch(createSpotAction(spot))
+        return spot;
+    }
+}
+
 const initialState = {allSpots: {}, singleSpot: {}};
 
 const spotReducer = (state = initialState, action) => {
@@ -47,6 +69,11 @@ const spotReducer = (state = initialState, action) => {
             newState = {...state, allSpots: {...state.allSpots}, singleSpot: {}}
             newState.singleSpot = action.spot;
             return newState;
+        }
+        case CREATE_SPOT: {
+            newState = {...state, allSpots: {...state.allSpots}, singleSpot:{}}
+            newState.allSpots[action.spot.id] = action.spot
+            return newState
         }
         default:
             return state;
