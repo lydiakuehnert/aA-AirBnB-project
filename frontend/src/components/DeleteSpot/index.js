@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { deleteSpotThunk } from "../../store/spots";
 import { useModal } from "../../context/Modal";
 

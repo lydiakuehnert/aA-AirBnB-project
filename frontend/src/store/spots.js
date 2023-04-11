@@ -5,6 +5,8 @@ const GET_SPOT = "spots/getSpot";
 const CREATE_SPOT = "spots/createSpot";
 const GET_USER_SPOTS = "spots/getUserSpots";
 const DELETE_SPOT = "spots/deleteSpot";
+const EDIT_SPOT = "spots/editSpot";
+
 
 const getUserSpotsAction = (spots) => {
     return {
@@ -34,13 +36,19 @@ const createSpotAction = (spot) => {
     }
 }
 
-const deleteSpotAction = (userId) => {
+const deleteSpotAction = (spotId) => {
     return {
         type: DELETE_SPOT,
-        userId
+        spotId
     }
 }
 
+const editSpotAction = (spot) => {
+    return {
+        type: EDIT_SPOT,
+        spot
+    }
+}
 
 export const getUserSpotsThunk = () => async dispatch => {
     const res = await csrfFetch('/api/spots/current')
@@ -104,6 +112,31 @@ export const deleteSpotThunk = (spotId) => async dispatch => {
     }
 }
 
+export const editSpotThunk = (payload) => async dispatch => {
+    const { newSpot, SpotImages } = payload;
+    const res = await csrfFetch(`/api/spots/${newSpot.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newSpot)
+    })
+
+    if (res.ok) {
+        const spot = await res.json();
+        for (let i = 0; i < SpotImages.length; i++) {
+            let img = SpotImages[i]
+            await csrfFetch(`/api/spots/${spot.id}/images`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(img)
+            })
+        }
+        dispatch(editSpotAction(spot))
+        return spot;
+    } else {
+        return res.json()
+    }
+}
+
 
 const initialState = {allSpots: {}, singleSpot: {}};
 
@@ -135,6 +168,11 @@ const spotReducer = (state = initialState, action) => {
             newState = {...state, allSpots: {...state.allSpots}, singleSpot: {}}
             delete newState.allSpots[action.spotId]
             return newState
+        }
+        case EDIT_SPOT: {
+            newState = {...state, allSpots: {...state.allSpots}, singleSpot: {}}
+            newState.allSpots[action.spot.id] = action.spot;
+            return newState;
         }
         default:
             return state;

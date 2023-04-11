@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createSpotThunk } from "../../store/spots";
+import { editSpotThunk } from "../../store/spots";
 
 
 function SpotForm({spot, formType}) {
@@ -44,7 +45,7 @@ function SpotForm({spot, formType}) {
         if (url4.length > 0) SpotImages.push({ url: url4, preview: false })
         if (url5.length > 0) SpotImages.push({ url: url5, preview: false })
 
-        const newSpot = {
+        let newSpot = {
             ...spot,
             address,
             city,
@@ -57,17 +58,18 @@ function SpotForm({spot, formType}) {
             price
         }
 
-        // if (formType === "Update your Spot") {
-        //     // const editedSpot = await dispatch(editSpotThunk(newSpot));
-        //     // newSpot = editedSpot;
-        // } else if (formType === "Create a new Spot") {
-        // }
-        const createdSpot = await dispatch(createSpotThunk({ newSpot, SpotImages }));
+        if (formType === "Update your Spot") {
+            const editedSpot = await dispatch(editSpotThunk({ newSpot, SpotImages }));
+            newSpot = editedSpot;
+        } else if (formType === "Create a new Spot") {
+            const createdSpot = await dispatch(createSpotThunk({ newSpot, SpotImages }));
+            newSpot = createdSpot
+        }
 
-        if (createdSpot.errors) {
-            setErrors(createdSpot.errors)
+        if (newSpot.errors) {
+            setErrors(newSpot.errors)
         } else {
-            history.push(`/spots/${createdSpot.id}`)
+            history.push(`/spots/${newSpot.id}`)
         }
         reset()
     }
@@ -88,7 +90,7 @@ function SpotForm({spot, formType}) {
         setUrl4("");
         setUrl5("");
         setSpotImg([]);
-        // setErrors({})
+        setErrors({})
     }
 
     return (
@@ -108,7 +110,7 @@ function SpotForm({spot, formType}) {
                         onChange={(e) => setCountry(e.target.value)}
                     />
                 </label>
-                <p className="errors">{errors.country}</p>
+                {Object.values(errors).length && <p className="errors">{errors.country}</p>}
                 <label>
                     Street Address
                     <input
