@@ -78,29 +78,29 @@ export const getSpotsThunk = () => async dispatch => {
 };
 
 export const createSpotThunk = (payload) => async dispatch => {
-    console.log("hit thunk ============", payload)
-    const {newSpot, SpotImages} = payload;
-    const res = await csrfFetch('/api/spots', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(newSpot)
-    })
-    
-    if (res.ok) {
-        const spot = await res.json();
-        for (let i = 0; i < SpotImages.length; i++) {
-            let img = SpotImages[i]
-            await csrfFetch(`/api/spots/${spot.id}/images`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(img)
-            })
-        }
-        dispatch(createSpotAction(spot))
-        return spot;
-    } else {
-        const data = await res.json()
-        console.log("Data is here =======", data)
+    try { 
+        const {newSpot, SpotImages} = payload;
+        const res = await csrfFetch('/api/spots', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(newSpot)
+        })
+        
+        if (res.ok) {
+            const spot = await res.json();
+            for (let i = 0; i < SpotImages.length; i++) {
+                let img = SpotImages[i]
+                await csrfFetch(`/api/spots/${spot.id}/images`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(img)
+                })
+            }
+            dispatch(createSpotAction(spot))
+            return spot;
+        } 
+    } catch (e) {
+        const data = await e.json()
         return data;
     }
 }
@@ -116,27 +116,29 @@ export const deleteSpotThunk = (spotId) => async dispatch => {
 }
 
 export const editSpotThunk = (payload) => async dispatch => {
-    const { newSpot, SpotImages } = payload;
-    const res = await csrfFetch(`/api/spots/${newSpot.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newSpot)
-    })
+    try {
+        const { newSpot, SpotImages } = payload;
+        const res = await csrfFetch(`/api/spots/${newSpot.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newSpot)
+        })
 
-    if (res.ok) {
-        const spot = await res.json();
-        for (let i = 0; i < SpotImages.length; i++) {
-            let img = SpotImages[i]
-            await csrfFetch(`/api/spots/${spot.id}/images`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(img)
-            })
-        }
-        dispatch(editSpotAction(spot))
-        return spot;
-    } else {
-        const data = await res.json()
+        if (res.ok) {
+            const spot = await res.json();
+            for (let i = 0; i < SpotImages.length; i++) {
+                let img = SpotImages[i]
+                await csrfFetch(`/api/spots/${spot.id}/images`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(img)
+                })
+            }
+            dispatch(editSpotAction(spot))
+            return spot;
+        } 
+    } catch (e) {
+        const data = await e.json()
         return data;
     }
 }
