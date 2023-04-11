@@ -98,7 +98,9 @@ export const createSpotThunk = (payload) => async dispatch => {
         dispatch(createSpotAction(spot))
         return spot;
     } else {
-        return res.json()
+        const data = await res.json()
+        console.log("Data is here =======", data)
+        return data;
     }
 }
 
@@ -133,7 +135,8 @@ export const editSpotThunk = (payload) => async dispatch => {
         dispatch(editSpotAction(spot))
         return spot;
     } else {
-        return res.json()
+        const data = await res.json()
+        return data;
     }
 }
 

@@ -71,8 +71,8 @@ function SpotForm({spot, formType}) {
             setErrors(newSpot.errors)
         } else {
             history.push(`/spots/${newSpot.id}`)
+            reset()
         }
-        reset()
     }
 
     const reset = () => {
@@ -111,7 +111,7 @@ function SpotForm({spot, formType}) {
                         onChange={(e) => setCountry(e.target.value)}
                     />
                 </label>
-                {Object.values(errors).length && <p className="errors">{errors.country}</p>}
+                {errors.country && <p className="errors">{errors.country}</p>}
                 <label>
                     Street Address
                     <input
@@ -121,7 +121,7 @@ function SpotForm({spot, formType}) {
                         onChange={e => setAddress(e.target.value)}
                     />
                 </label>
-                <p className="errors">{errors.address}</p>
+                {errors.address && <p className="errors">{errors.address}</p>}
                 <label>
                     City
                     <input
