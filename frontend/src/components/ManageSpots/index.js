@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserSpotsThunk } from "../../store/spots";
 import "./ManageSpots.css"
 import DeleteSpot from "../DeleteSpot";
+import { NavLink } from "react-router-dom";
+import OpenModalButton from "../OpenModalButton";
 
 export default function ManageSpots() {
     const dispatch = useDispatch();
@@ -16,14 +18,21 @@ export default function ManageSpots() {
     }, [dispatch])
 
     return (
-        <div className="user-spots">
-            {spots.length > 0 && spots.map(spot => (
-                <div key = {spot.id}>
-                    <SpotCard spot={spot} />
-                    <button>Update</button>
-                    <DeleteSpot spot={spot} />
-                </div>
-            ))}
+        <div>
+            <h1>Manage Spots</h1>
+            {!spots.length && <button><NavLink exact to="/spots/new">Create a New Spot</NavLink></button>}
+            <div className="user-spots">
+                {spots.length > 0 && spots.map(spot => (
+                    <div key = {spot.id}>
+                        <SpotCard spot={spot} />
+                        <button>Update</button>
+                        <OpenModalButton 
+                            buttonText="Delete"
+                            modalComponent={<DeleteSpot spot={spot} />}
+                        />
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
