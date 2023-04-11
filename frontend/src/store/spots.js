@@ -78,6 +78,7 @@ export const getSpotsThunk = () => async dispatch => {
 };
 
 export const createSpotThunk = (payload) => async dispatch => {
+    console.log("hit thunk ============", payload)
     const {newSpot, SpotImages} = payload;
     const res = await csrfFetch('/api/spots', {
         method: 'POST',

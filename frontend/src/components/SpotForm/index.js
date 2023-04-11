@@ -66,6 +66,7 @@ function SpotForm({spot, formType}) {
             const createdSpot = await dispatch(createSpotThunk({ newSpot, SpotImages }));
             newSpot = createdSpot
         }
+        console.log("newSPOT============", newSpot)
 
         if (newSpot.errors) {
             setErrors(newSpot.errors)
