@@ -19,18 +19,15 @@ function SpotForm({spot, formType}) {
     const [url3, setUrl3] = useState("")
     const [url4, setUrl4] = useState("")
     const [url5, setUrl5] = useState("")
-    const [spotImg, setSpotImg] = useState([]);
-
-
-    // setSpotImg(oldArr => [...oldArr, { url: e.target.value, preview: false }])
-    // const [errors, setErrors] = useState({})
+    const [SpotImages, setSpotImg] = useState([]);
+    const [errors, setErrors] = useState({})
 
     const history = useHistory();
     const dispatch = useDispatch();
 
     // useEffect(() => {
     //     const err = {};
-    //     if (name.length < 3) err.name = "Name must be 3 or more characters."
+    //     if (country.length < 1) err.country = "Name must be 3 or more characters."
     //     if (name.length > 20) err.name = "Name must be 20 characters or less."
     //     if (fruits.find(f => (name === f.name))) err.name = "Name already exists."
     //     if (sweetness < 1 || sweetness > 10) err.sweetness = "Sweetness must be between 1 and 10."
@@ -39,6 +36,13 @@ function SpotForm({spot, formType}) {
 
     async function onSubmit(e) {
         e.preventDefault()
+        setErrors({})
+
+        if (url1.length > 0) SpotImages.push({url: url1, preview: true})
+        if (url2.length > 0) SpotImages.push({ url: url2, preview: false })
+        if (url3.length > 0) SpotImages.push({ url: url3, preview: false })
+        if (url4.length > 0) SpotImages.push({ url: url4, preview: false })
+        if (url5.length > 0) SpotImages.push({ url: url5, preview: false })
 
         const newSpot = {
             ...spot,
@@ -50,18 +54,40 @@ function SpotForm({spot, formType}) {
             lng,
             name,
             description,
-            price,
-            spotImg
+            price
         }
 
-        await dispatch(createSpotThunk(newSpot))
+        // if (formType === "Update your Spot") {
+        //     // const editedSpot = await dispatch(editSpotThunk(newSpot));
+        //     // newSpot = editedSpot;
+        // } else if (formType === "Create a new Spot") {
+        // }
+        const createdSpot = await dispatch(createSpotThunk({ newSpot, SpotImages }));
+
+        if (createdSpot.errors) {
+            setErrors(createdSpot.errors)
+        } else {
+            history.push(`/spot/${createdSpot.id}`)
+        }
         reset()
-        history.push(`/spot/${newSpot.id}`)
     }
 
     const reset = () => {
         setName("");
-    
+        setAddress("");
+        setCity("");
+        setState("");
+        setCountry("");
+        setLat("");
+        setLng("");
+        setDescription("");
+        setPrice("");
+        setUrl1("");
+        setUrl2("");
+        setUrl3("");
+        setUrl4("");
+        setUrl5("");
+        setSpotImg([]);
         // setErrors({})
     }
 
@@ -82,7 +108,7 @@ function SpotForm({spot, formType}) {
                         onChange={(e) => setCountry(e.target.value)}
                     />
                 </label>
-                {/* <p className="errors">{errors.name}</p> */}
+                <p className="errors">{errors.country}</p>
                 <label>
                     Street Address
                     <input
@@ -92,7 +118,7 @@ function SpotForm({spot, formType}) {
                         onChange={e => setAddress(e.target.value)}
                     />
                 </label>
-                {/* <p className="errors">{errors.sweetness}</p> */}
+                <p className="errors">{errors.address}</p>
                 <label>
                     City
                     <input

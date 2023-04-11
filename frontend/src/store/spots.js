@@ -1,3 +1,5 @@
+import { csrfFetch } from "./csrf";
+
 const GET_SPOTS = "spots/getSpots";
 const GET_SPOT = "spots/getSpot";
 const CREATE_SPOT = "spots/createSpot"
@@ -24,7 +26,7 @@ const createSpotAction = (spot) => {
 }
 
 export const getSpotThunk = (spotId) => async dispatch => {
-    const res = await fetch(`/api/spots/${spotId}`);
+    const res = await csrfFetch(`/api/spots/${spotId}`);
 
     if (res.ok) {
         const spot = await res.json()
@@ -33,7 +35,7 @@ export const getSpotThunk = (spotId) => async dispatch => {
 }
 
 export const getSpotsThunk = () => async dispatch => {
-    const res = await fetch('/api/spots')
+    const res = await csrfFetch('/api/spots')
 
     if (res.ok) {
         const spots = await res.json();
@@ -42,24 +44,27 @@ export const getSpotsThunk = () => async dispatch => {
 };
 
 export const createSpotThunk = (payload) => async dispatch => {
-    const res = await fetch('/api/spots', {
+    const {newSpot, SpotImages} = payload;
+    const res = await csrfFetch('/api/spots', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(payload)
+        body: JSON.stringify(newSpot)
     })
-    for (let i = 0; i < payload.spotImg.length; i++) {
-        let img = payload.spotImg[i]
-        await fetch(`/api/spots/${payload.id}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(img)
-        })
-    }
-
+    
     if (res.ok) {
         const spot = await res.json();
+        for (let i = 0; i < SpotImages.length; i++) {
+            let img = SpotImages[i]
+            await csrfFetch(`/api/spots/${spot.id}/images`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(img)
+            })
+        }
         dispatch(createSpotAction(spot))
         return spot;
+    } else {
+        return res.json()
     }
 }
 
@@ -81,7 +86,8 @@ const spotReducer = (state = initialState, action) => {
         }
         case CREATE_SPOT: {
             newState = {...state, allSpots: {...state.allSpots}, singleSpot:{}}
-            newState.allSpots[action.spot.id] = action.spot
+            newState.allSpots[action.spot.id] = action.spot;
+            newState.singleSpot = action.spot;
             return newState
         }
         default:
