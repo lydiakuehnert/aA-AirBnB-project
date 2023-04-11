@@ -6,15 +6,16 @@ import { editSpotThunk } from "../../store/spots";
 
 
 function SpotForm({spot, formType}) {
-    const [name, setName] = useState("");
-    const [address, setAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [country, setCountry] = useState("");
-    const [lat, setLat] = useState("");
-    const [lng, setLng] = useState("");
-    const [description, setDescription] = useState("");
-    const [price, setPrice] = useState("");
+    const {name, address, city, state, country, lat, lng, description, price} = spot
+    const [name1, setName] = useState(formType === "Update your Spot" ? name : "");
+    const [address1, setAddress] = useState(formType === "Update your Spot" ? address : "");
+    const [city1, setCity] = useState(formType === "Update your Spot" ? city : "");
+    const [state1, setState] = useState(formType === "Update your Spot" ? state : "");
+    const [country1, setCountry] = useState(formType === "Update your Spot" ? country : "");
+    const [lat1, setLat] = useState(formType === "Update your Spot" ? lat : "");
+    const [lng1, setLng] = useState(formType === "Update your Spot" ? lng : "");
+    const [description1, setDescription] = useState(formType === "Update your Spot" ? description : "");
+    const [price1, setPrice] = useState(formType === "Update your Spot" ? price : "");
     const [url1, setUrl1] = useState("")
     const [url2, setUrl2] = useState("")
     const [url3, setUrl3] = useState("")
@@ -47,15 +48,15 @@ function SpotForm({spot, formType}) {
 
         let newSpot = {
             ...spot,
-            address,
-            city,
-            state,
-            country,
-            lat,
-            lng,
-            name,
-            description,
-            price
+            address: address1,
+            city: city1,
+            state: state1,
+            country: country1,
+            lat: lat1,
+            lng: lng1,
+            name: name1,
+            description: description1,
+            price: price1
         }
 
         if (formType === "Update your Spot") {
@@ -105,7 +106,7 @@ function SpotForm({spot, formType}) {
                 <label>Country
                     <input
                         type="text"
-                        value={country}
+                        value={country1}
                         placeholder="Country"
                         onChange={(e) => setCountry(e.target.value)}
                     />
@@ -115,7 +116,7 @@ function SpotForm({spot, formType}) {
                     Street Address
                     <input
                         type="text"
-                        value={address}
+                        value={address1}
                         placeholder="Address"
                         onChange={e => setAddress(e.target.value)}
                     />
@@ -125,7 +126,7 @@ function SpotForm({spot, formType}) {
                     City
                     <input
                         type="text"
-                        value={city}
+                        value={city1}
                         placeholder="City"
                         onChange={e => setCity(e.target.value)}
                     />
@@ -134,7 +135,7 @@ function SpotForm({spot, formType}) {
                     State
                     <input
                         type="text"
-                        value={state}
+                        value={state1}
                         placeholder="STATE"
                         onChange={e => setState(e.target.value)}
                     />
@@ -143,7 +144,7 @@ function SpotForm({spot, formType}) {
                     Latitude
                     <input
                         type="text"
-                        value={lat}
+                        value={lat1}
                         placeholder="Latitude"
                         onChange={e => setLat(e.target.value)}
                     />
@@ -152,7 +153,7 @@ function SpotForm({spot, formType}) {
                     Longitude
                     <input
                         type="text"
-                        value={lng}
+                        value={lng1}
                         placeholder="Longitude"
                         onChange={e => setLng(e.target.value)}
                     />
@@ -164,7 +165,7 @@ function SpotForm({spot, formType}) {
                 <label>
                     <input
                         type="text"
-                        value={description}
+                        value={description1}
                         placeholder="Please write at least 30 characters"
                         onChange={e => setDescription(e.target.value)}
                         />
@@ -176,7 +177,7 @@ function SpotForm({spot, formType}) {
                 <label>
                     <input
                         type="text"
-                        value={name}
+                        value={name1}
                         placeholder="Name of your spot"
                         onChange={e => setName(e.target.value)}
                     />
@@ -188,13 +189,13 @@ function SpotForm({spot, formType}) {
                 <label> $
                     <input
                         type="text"
-                        value={price}
+                        value={price1}
                         placeholder="Price per night (USD)"
                         onChange={e => setPrice(e.target.value)}
                     />
                 </label>
             </section>
-            <section>
+            {formType === "Create a new Spot" && <section>
                 <h3>Liven up your spot with photos</h3>
                 <p>Submit a link to at least one photo to publish your spot.</p>
                 <input
@@ -227,7 +228,7 @@ function SpotForm({spot, formType}) {
                     placeholder="Image URL"
                     onChange={e => setUrl5(e.target.value)}
                 />
-            </section>
+            </section>}
             <button
                 type="submit"
                 // disabled={Object.values(errors).length ? true : false}

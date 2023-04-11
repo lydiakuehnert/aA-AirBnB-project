@@ -151,11 +151,11 @@ router.get('/', async (req, res, next) => {
         spotsList.push(spot.toJSON())
     })
     spotsList.forEach(spot => {
-        spot.SpotImages.forEach(img => {
-            if (img.preview === true) spot.previewImage = img.url
-            else spot.previewImage = 'no preview image found'
-        })
         if (!spot.SpotImages.length) spot.previewImage = 'no preview image found'
+        else {
+            const found = spot.SpotImages.find(img => img.preview === true)
+            if (found) spot.previewImage = found.url
+        }
         delete spot.SpotImages
         
         let count = 0;
@@ -191,11 +191,16 @@ router.get('/current', requireAuth, async (req, res) => {
         spotsList.push(spot.toJSON())
     })
     spotsList.forEach(spot => {
-        spot.SpotImages.forEach(img => {
-            if (img.preview === true) spot.previewImage = img.url
-            else spot.previewImage = 'no preview image found'
-        })
         if (!spot.SpotImages.length) spot.previewImage = 'no preview image found'
+        else {
+            const found = spot.SpotImages.find(img => img.preview === true)
+            if (found) spot.previewImage = found.url
+        }
+        // spot.SpotImages.forEach(img => {
+        //     if (img.preview === true) spot.previewImage = img.url
+        //     else spot.previewImage = 'no preview image found'
+        // })
+        // if (!spot.SpotImages.length) spot.previewImage = 'no preview image found'
         delete spot.SpotImages
 
         let count = 0;
