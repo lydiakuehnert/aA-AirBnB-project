@@ -67,7 +67,7 @@ function SpotForm({spot, formType}) {
         if (createdSpot.errors) {
             setErrors(createdSpot.errors)
         } else {
-            history.push(`/spot/${createdSpot.id}`)
+            history.push(`/spots/${createdSpot.id}`)
         }
         reset()
     }

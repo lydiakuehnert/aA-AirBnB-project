@@ -36,7 +36,7 @@ export default function OneSpot() {
                             <h3>night</h3>
                         </span>
                         <h3>
-                            <i className="fa-solid fa-star"></i>{spot.avgStarRating === "no average rating" ? "New" : spot.avgStarRating} - {spot.numReviews} reviews
+                            <i className="fa-solid fa-star"></i>{spot.avgStarRating ? `${spot.avgStarRating} - ${spot.numReviews} reviews` : "New"}
                         </h3>
                     </div>
                     <button onClick={() => alert("Feature Coming Soon...")}>Reserve</button>
