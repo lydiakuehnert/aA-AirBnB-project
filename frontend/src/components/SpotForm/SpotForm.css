@@ -1,0 +1,51 @@
+.errorshide {
+    color: white;
+}
+
+.errors {
+    color: red;
+    margin-left: 5px;
+}
+
+.spot-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    width: 40%;
+}
+
+.form-section {
+    border-bottom: 3px solid black;
+}
+
+.enter-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.enter-label {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.enter-input {
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: 15px;
+}
+
+.big-enter-box {
+    display: flex;
+    align-items: end;
+}
+
+.comma {
+    display: flex;
+    align-items: end;
+    margin-bottom: 13px;
+    margin-left: 2px;
+    width: 17px;
+}

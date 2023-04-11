@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getSpotThunk } from "../../store/spots";
+import SpotReviews from "../SpotReviews";
 import "./OneSpot.css"
 
 export default function OneSpot() {
@@ -43,6 +44,7 @@ export default function OneSpot() {
                 </div> 
             </div> 
             <div className="review-detail-box">
+                <SpotReviews spotId={spotId}/>
             </div>     
         </div>
     )

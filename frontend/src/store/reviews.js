@@ -1,6 +1,6 @@
 import { csrfFetch } from "./csrf";
 
-const GET_REVIEWS = "reviews/getRevuews";
+const GET_REVIEWS = "reviews/getReviews";
 const GET_REVIEW = "reviews/getReview";
 const CREATE_REVIEW = "reviews/createReview";
 const GET_USER_REVIEWS = "reviews/getUserReviews";
@@ -68,14 +68,14 @@ const editReviewAction = (review) => {
 //     }
 // }
 
-// export const getSpotsThunk = () => async dispatch => {
-//     const res = await csrfFetch('/api/spots')
+export const getReviewsThunk = (spotId) => async dispatch => {
+    const res = await csrfFetch(`/api/spots/${spotId}/reviews`)
 
-//     if (res.ok) {
-//         const spots = await res.json();
-//         dispatch(getSpotsAction(spots.Spots))
-//     }
-// };
+    if (res.ok) {
+        const reviews = await res.json();
+        dispatch(getReviewsAction(reviews.Reviews))
+    }
+};
 
 // export const createSpotThunk = (payload) => async dispatch => {
 //     console.log("hit thunk ============", payload)
