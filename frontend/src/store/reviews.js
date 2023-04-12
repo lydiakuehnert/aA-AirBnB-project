@@ -46,18 +46,20 @@ export const getReviewsThunk = (spotId) => async dispatch => {
 };
 
 export const createReviewThunk = ({spotId, payload}) => async dispatch => {
-    const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    })
-
-    if (res.ok) {
-        const review = await res.json();
-        dispatch(createReviewAction(review))
-        return review;
-    } else {
-        const data = await res.json()
+    try {
+        const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        
+        if (res.ok) {
+            const review = await res.json();
+            dispatch(createReviewAction(review))
+            return review;
+        }
+    } catch (e) {
+        const data = await e.json()
         return data;
     }
 }
@@ -89,20 +91,10 @@ const reviewReducer = (state = initialState, action) => {
             // newState.singleSpot = action.spot;
             return newState
         }
-        // case GET_USER_SPOTS: {
-        //     newState = { ...state, allSpots: {}, singleSpot: {} }
-        //     action.spots.forEach(spot => newState.allSpots[spot.id] = spot)
-        //     return newState
-        // }
         // case DELETE_SPOT: {
         //     newState = { ...state, allSpots: { ...state.allSpots }, singleSpot: {} }
         //     delete newState.allSpots[action.spotId]
         //     return newState
-        // }
-        // case EDIT_SPOT: {
-        //     newState = { ...state, allSpots: { ...state.allSpots }, singleSpot: {} }
-        //     newState.allSpots[action.spot.id] = action.spot;
-        //     return newState;
         // }
         default:
             return state;

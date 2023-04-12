@@ -3,20 +3,21 @@ import { createReviewThunk } from "../../store/reviews";
 import { useModal } from "../../context/Modal";
 import { useState } from "react";
 import "./ReviewPost.css";
+import { getSpotThunk } from "../../store/spots";
 
 export default function ReviewPost({ spot }) {
     const dispatch = useDispatch();
     const { closeModal } = useModal();
     const [input, setInput] = useState("");
     const [rating, setRating] = useState("");
+    const [activeRating, setActiveRating] = useState(rating);
+    const [errors, setErrors] = useState({})
+
 
     const spotId = spot.id;
 
-    // const onChange = (number) => {
-    //     setRating(parseInt(number));
-    // };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         const payload = {
@@ -24,12 +25,20 @@ export default function ReviewPost({ spot }) {
             stars: rating
         }
 
-        return dispatch(createReviewThunk({spotId, payload})).then(closeModal)
+        const result = await dispatch(createReviewThunk({spotId, payload}))
+
+        if (result.message) {
+            setErrors(result)
+        } else {
+            dispatch(getSpotThunk(spotId))
+            closeModal()
+        }
     }
 
     return (
         <form onSubmit={handleSubmit}>
             <h1>How was your stay?</h1>
+            {Object.values(errors).length > 0 && <p className="errors">{errors.message}</p>}
             <input 
                 type="text"
                 placeholder="Leave your review here..."
@@ -37,28 +46,34 @@ export default function ReviewPost({ spot }) {
                 onChange={(e) => setInput(e.target.value)}
                 />
             <div className="rating-input">
-                <div className={rating > 0 ? "filled" : "empty"}
+                <div onMouseEnter={() => setActiveRating(1)}
+                    onMouseLeave={() => setActiveRating(rating)}
                     onClick={() => setRating(1)}>
-                    <i className="fa-regular fa-star"></i>
+                    {activeRating > 0 ? <i className="fa-solid fa-star"></i> : <i className="fa-regular fa-star"></i>}
                 </div>
-                <div className={rating > 1 ? "filled" : "empty"}
+                <div onMouseEnter={() => setActiveRating(2)}
+                    onMouseLeave={() => setActiveRating(rating)}
                     onClick={() => setRating(2)} >
-                    <i className="fa-regular fa-star"></i>
+                    {activeRating > 1 ? <i className="fa-solid fa-star"></i> : <i className="fa-regular fa-star"></i>}
                 </div>
-                <div className={rating > 2 ? "filled" : "empty"}
+                <div onMouseEnter={() => setActiveRating(3)}
+                    onMouseLeave={() => setActiveRating(rating)}
                     onClick={() => setRating(3)}>
-                    <i className="fa-regular fa-star"></i>
+                    {activeRating > 2 ? <i className="fa-solid fa-star"></i> : <i className="fa-regular fa-star"></i>}
                 </div>
-                <div className={rating > 3 ? "filled" : "empty"}
+                <div onMouseEnter={() => setActiveRating(4)}
+                    onMouseLeave={() => setActiveRating(rating)}
                     onClick={() => setRating(4)}>
-                    <i className="fa-regular fa-star"></i>
+                    {activeRating > 3 ? <i className="fa-solid fa-star"></i> : <i className="fa-regular fa-star"></i>}
                 </div>
-                <div className={rating > 4 ? "filled" : "empty"}
+                <div onMouseEnter={() => setActiveRating(5)}
+                    onMouseLeave={() => setActiveRating(rating)}
                     onClick={() => setRating(5)}>
-                    <i className="fa-regular fa-star"></i>
+                    {activeRating > 4 ? <i className="fa-solid fa-star"></i> : <i className="fa-regular fa-star"></i>}
                 </div>
+                <h5>Stars</h5>
             </div>
-            <button type="submit">Submit Your Review</button>
+            <button type="submit" disabled={input.length < 10 || rating < 1}>Submit Your Review</button>
         </form>
     )
 }

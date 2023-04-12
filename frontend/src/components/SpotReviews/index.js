@@ -30,16 +30,24 @@ export default function SpotReviews({spot}) {
                 buttonText="Post Your Review"
                 modalComponent={<ReviewPost spot={spot} />}
             />
-            {reviews.length > 0 && reviews.map(review => (
-                <div key={review.id}>
-                    <h4>{review.User && review.User.firstName}</h4>
-                    <h5>
-                        {review.createdAt.split("-")[1]}
-                        {review.createdAt.split("-")[0]}
-                    </h5>
-                    <p>{review.review}</p>
-                </div>
-            ))}
+            {reviews.length > 0 && reviews.slice().reverse().map(review => {
+                const reviewMonth = review.createdAt.split("")[6]
+                const reviewMonth2 = review.createdAt.split("-")[1];
+                let month;
+                if (reviewMonth2 < 10) month = months[reviewMonth]
+                if (reviewMonth2 >= 10) month = months[reviewMonth2]
+                const year = review.createdAt.split("-")[0]
+                return (
+                    <div key={review.id}>
+                        <h4>{review.User && review.User.firstName}</h4>
+                        <h5>
+                            {month}
+                            {year}
+                        </h5>
+                        <p>{review.review}</p>
+                    </div>
+                )
+            })}
         </div>
     )
 }
