@@ -276,7 +276,6 @@ function SpotForm({spot, formType}) {
             </section>}
             <button
                 type="submit"
-                // disabled={Object.values(errors).length ? true : false}
             >
                 CreateSpot
             </button>
