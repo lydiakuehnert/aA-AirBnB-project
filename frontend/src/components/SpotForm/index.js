@@ -39,79 +39,70 @@ function SpotForm({spot, formType}) {
         if (state1.length < 1) err.state1 = "State is required";
         if (lat1.length < 1) err.lat1 = "Latitude is required";
         if (lng1.length < 1) err.lng1 = "Longitude is required";
-        if (description1.length < 30) err.description = "Description needs a minimum of 30 characters";
+        if (description1.length < 30) err.description1 = "Description needs a minimum of 30 characters";
         if (price1.length < 1) err.price1 = "Price is required";
-        if (url1.length < 1) err.url1 = "Preview image is required."
+        if (url1.length < 1 && formType === "Create a new Spot") err.url1 = "Preview image is required."
         setErrors(err)
-    }, [])
+    }, [name1, address1, city1, country1, state1, lat1, lng1, description1, price1, url1])
 
     const errorClass = "errors" + (displayErrors ? '' : 'hide')
 
     async function onSubmit(e) {
         e.preventDefault()
-        // setErrors({})
-        // setSubmit(true);
 
-        if (errors) {
-            setDisplayErrors(true);
-            return;
-        }
+        if (formType === "Create a new Spot") {
+            if (Object.values(errors).length > 0) {
+                setDisplayErrors(true)
+            }
+            else {
+                if (url1.length > 0) SpotImages.push({ url: url1, preview: true })
+                if (url2.length > 0) SpotImages.push({ url: url2, preview: false })
+                if (url3.length > 0) SpotImages.push({ url: url3, preview: false })
+                if (url4.length > 0) SpotImages.push({ url: url4, preview: false })
+                if (url5.length > 0) SpotImages.push({ url: url5, preview: false })
+    
+                let newSpot = {
+                    ...spot,
+                    address: address1,
+                    city: city1,
+                    state: state1,
+                    country: country1,
+                    lat: lat1,
+                    lng: lng1,
+                    name: name1,
+                    description: description1,
+                    price: price1
+                }
+    
+                const createdSpot = await dispatch(createSpotThunk({ newSpot, SpotImages }));
+                history.push(`/spots/${createdSpot.id}`)
+            }
 
-        if (url1.length > 0) SpotImages.push({url: url1, preview: true})
-        if (url2.length > 0) SpotImages.push({ url: url2, preview: false })
-        if (url3.length > 0) SpotImages.push({ url: url3, preview: false })
-        if (url4.length > 0) SpotImages.push({ url: url4, preview: false })
-        if (url5.length > 0) SpotImages.push({ url: url5, preview: false })
-
-        let newSpot = {
-            ...spot,
-            address: address1,
-            city: city1,
-            state: state1,
-            country: country1,
-            lat: lat1,
-            lng: lng1,
-            name: name1,
-            description: description1,
-            price: price1
-        }
-
-        if (formType === "Update your Spot") {
-            const editedSpot = await dispatch(editSpotThunk({ newSpot, SpotImages }));
-            newSpot = editedSpot;
-        } else if (formType === "Create a new Spot") {
-            const createdSpot = await dispatch(createSpotThunk({ newSpot, SpotImages }));
-            newSpot = createdSpot
-        }
-
-        if (newSpot.errors) {
-            setErrors(newSpot.errors)
         } else {
-            history.push(`/spots/${newSpot.id}`)
-            reset()
+            if (Object.values(errors).length > 0) {
+                setDisplayErrors(true)
+            }
+            else {
+                let newSpot = {
+                    ...spot,
+                    address: address1,
+                    city: city1,
+                    state: state1,
+                    country: country1,
+                    lat: lat1,
+                    lng: lng1,
+                    name: name1,
+                    description: description1,
+                    price: price1
+                }
+
+                const editedSpot = await dispatch(editSpotThunk({ newSpot, SpotImages }));
+                history.push(`/spots/${editedSpot.id}`)
+            }
         }
     }
 
-    const reset = () => {
-        setName("");
-        setAddress("");
-        setCity("");
-        setState("");
-        setCountry("");
-        setLat("");
-        setLng("");
-        setDescription("");
-        setPrice("");
-        setUrl1("");
-        setUrl2("");
-        setUrl3("");
-        setUrl4("");
-        setUrl5("");
-        setSpotImg([]);
-        setErrors({});
-        setDisplayErrors(false)
-        // setSubmit(false);
-    }
+    
 
     return (
         <form
@@ -125,7 +116,7 @@ function SpotForm({spot, formType}) {
                 <div className="enter-box">
                     <div className="enter-label">
                         <label>Country</label>
-                        {errors.country1 && <p className={errorClass}>{errors.country1}</p>}
+                        {displayErrors && errors.country1 && <p className={errorClass}>{errors.country1}</p>}
                     </div>
                     <input
                         className="enter-input"
@@ -138,7 +129,7 @@ function SpotForm({spot, formType}) {
                 <div className="enter-box">
                     <div className="enter-label">
                         <label>Street Address</label>
-                        {errors.address1 && <p className={errorClass}>{errors.address1}</p>}
+                        {displayErrors && errors.address1 && <p className={errorClass}>{errors.address1}</p>}
                     </div>
                     <input
                         className="enter-input"
@@ -153,7 +144,7 @@ function SpotForm({spot, formType}) {
                     <div className="enter-box">
                         <div className="enter-label">
                             <label>City</label>
-                            {errors.city1 && <p className={errorClass}>{errors.city1}</p>}
+                            {displayErrors && errors.city1 && <p className={errorClass}>{errors.city1}</p>}
                         </div>
                         <input
                             className="enter-input"
@@ -167,7 +158,7 @@ function SpotForm({spot, formType}) {
                     <div className="enter-box">
                         <div className="enter-label">
                             <label>State</label>
-                            {errors.state1 && <p className={errorClass}>{errors.state1}</p>}
+                            {displayErrors && errors.state1 && <p className={errorClass}>{errors.state1}</p>}
                         </div>
                         <input
                             className="enter-input"
@@ -182,7 +173,7 @@ function SpotForm({spot, formType}) {
                     <div className="enter-box">
                         <div className="enter-label">
                             <label>Latitude</label>
-                            {errors.lat1 && <p className={errorClass}>{errors.lat1}</p>}
+                            {displayErrors && errors.lat1 && <p className={errorClass}>{errors.lat1}</p>}
                         </div>
                         <input
                             className="enter-input"
@@ -196,7 +187,7 @@ function SpotForm({spot, formType}) {
                     <div className="enter-box">
                         <div className="enter-label">
                             <label>Longitude</label>
-                            {errors.lng1 && <p className={errorClass}>{errors.lng1}</p>}
+                            {displayErrors && errors.lng1 && <p className={errorClass}>{errors.lng1}</p>}
                         </div>
                         <input
                             className="enter-input"
@@ -220,7 +211,7 @@ function SpotForm({spot, formType}) {
                         onChange={e => setDescription(e.target.value)}
                         />
                 </label>
-                {errors.description1 && <p className={errorClass}>{errors.description1}</p>}
+                {displayErrors && errors.description1 && <p className={errorClass}>{errors.description1}</p>}
             </section>
             <section className="form-section">
                 <h3>Create a title for your spot</h3>
@@ -233,7 +224,7 @@ function SpotForm({spot, formType}) {
                         onChange={e => setName(e.target.value)}
                     />
                 </label>
-                {errors.name1 && <p className={errorClass}>{errors.name1}</p>}
+                {displayErrors && errors.name1 && <p className={errorClass}>{errors.name1}</p>}
             </section>
             <section className="form-section">
                 <h3>Set a base price for you spot</h3>
@@ -246,7 +237,7 @@ function SpotForm({spot, formType}) {
                         onChange={e => setPrice(e.target.value)}
                     />
                 </label>
-                {errors.price1 && <p className={errorClass}>{errors.price1}</p>}
+                {displayErrors && errors.price1 && <p className={errorClass}>{errors.price1}</p>}
             </section>
             {formType === "Create a new Spot" && <section className="form-section">
                 <h3>Liven up your spot with photos</h3>
@@ -257,7 +248,7 @@ function SpotForm({spot, formType}) {
                     placeholder="Preview Image URL"
                     onChange={e => setUrl1(e.target.value)}
                 />
-                {errors.url1 && <p className={errorClass}>{errors.url1}</p>}
+                {formType === "Create a new Spot" && displayErrors && errors.url1 && <p className={errorClass}>{errors.url1}</p>}
                 <input
                     type="text"
                     value={url2}
@@ -294,3 +285,53 @@ function SpotForm({spot, formType}) {
 }
 
 export default SpotForm;
+
+
+
+
+// async function onSubmit(e) {
+//     e.preventDefault()
+//     // setErrors({})
+//     // setSubmit(true);
+
+//     if (Object.values(errors).length > 0) {
+//         setDisplayErrors(true);
+//         // return;
+//     }
+
+//     if (url1.length > 0) SpotImages.push({ url: url1, preview: true })
+//     if (url2.length > 0) SpotImages.push({ url: url2, preview: false })
+//     if (url3.length > 0) SpotImages.push({ url: url3, preview: false })
+//     if (url4.length > 0) SpotImages.push({ url: url4, preview: false })
+//     if (url5.length > 0) SpotImages.push({ url: url5, preview: false })
+
+//     let newSpot = {
+//         ...spot,
+//         address: address1,
+//         city: city1,
+//         state: state1,
+//         country: country1,
+//         lat: lat1,
+//         lng: lng1,
+//         name: name1,
+//         description: description1,
+//         price: price1
+//     }
+
+//     if (formType === "Update your Spot") {
+//         const editedSpot = await dispatch(editSpotThunk({ newSpot, SpotImages }));
+//         newSpot = editedSpot;
+//     } else if (formType === "Create a new Spot") {
+//         const createdSpot = await dispatch(createSpotThunk({ newSpot, SpotImages }));
+//         newSpot = createdSpot
+//     }
+
+//     console.log("edited spot =======", newSpot)
+
+//     if (newSpot.errors) {
+//         setErrors(newSpot.errors)
+//     } else {
+//         history.push(`/spots/${newSpot.id}`)
+//         reset()
+//     }
+// }
