@@ -17,6 +17,7 @@ export default function OneSpot() {
     }, [dispatch])
 
     if (!spot) return null;
+    if (!spot.id) return null;
 
     return (
         <div>
@@ -37,14 +38,17 @@ export default function OneSpot() {
                             <h3>night</h3>
                         </span>
                         <h3>
-                            <i className="fa-solid fa-star"></i>{spot.avgStarRating ? `${spot.avgStarRating} - ${spot.numReviews} reviews` : "New"}
+                            <i className="fa-solid fa-star"></i>
+                            {spot.avgStarRating ? `${spot.avgStarRating.toFixed(1)} · ${spot.numReviews} ` : "New"}
+                            {spot.numReviews === 1 ? "review" : ""}
+                            {spot.numReviews > 1 ? "reviews" : ""}
                         </h3>
                     </div>
                     <button onClick={() => alert("Feature Coming Soon...")}>Reserve</button>
                 </div> 
             </div> 
             <div className="review-detail-box">
-                <SpotReviews spotId={spotId}/>
+                <SpotReviews spot={spot}/>
             </div>     
         </div>
     )

@@ -3,6 +3,9 @@ import { NavLink } from 'react-router-dom';
 
 export default function SpotCard({spot}) {
 
+    if (!spot) return null;
+    if(!spot.avgRating) return null;
+
     return (
         <div title={spot.name} className="spot-card">
             <NavLink exact to={`/spots/${spot.id}`}>
