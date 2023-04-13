@@ -32,6 +32,7 @@ export default function SpotReviews({spot}) {
                 buttonText="Post Your Review"
                 modalComponent={<ReviewPost spot={spot} />}
             />}
+            {!reviews.length && sessionUser && sessionUser.id!== spot.Owner.id && <h5>Be the first to post a review!</h5>}
             {reviews.length > 0 && reviews.slice().reverse().map(review => {
                 const reviewMonth = review.createdAt.split("")[6]
                 const reviewMonth2 = review.createdAt.split("-")[1];
