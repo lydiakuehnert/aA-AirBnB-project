@@ -23,7 +23,7 @@ export default function ManageSpots() {
             {!spots.length && <button><NavLink exact to="/spots/new">Create a New Spot</NavLink></button>}
             <div className="user-spots">
                 {spots.length > 0 && spots.map(spot => (
-                    <div key = {spot.id}>
+                    <div className="user-spot-detail" key = {spot.id}>
                         <SpotCard spot={spot} />
                         <button><NavLink exact to={`/spots/${spot.id}/edit`}>Update</NavLink></button>
                         <OpenModalButton 

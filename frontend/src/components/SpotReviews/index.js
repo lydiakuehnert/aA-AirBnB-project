@@ -8,12 +8,13 @@ export default function SpotReviews({spot}) {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
     const dispatch = useDispatch();
-
+    const sessionUser = useSelector(state => state.session.user);
     const reviewsObj = useSelector(state => state.reviews.spot);
     const reviews = Object.values(reviewsObj)
 
     useEffect(() => {
         dispatch(getReviewsThunk(spot.id))
+        console.log("SESSION USER ++++++", sessionUser)
     }, [dispatch])
 
     if (!reviews) return null;
@@ -26,10 +27,10 @@ export default function SpotReviews({spot}) {
                 {spot.numReviews === 1 ? "review" : ""}
                 {spot.numReviews > 1 ? "reviews" : ""}
             </h1>
-            <OpenModalButton
+            {sessionUser && sessionUser.id !== spot.Owner.id && <OpenModalButton
                 buttonText="Post Your Review"
                 modalComponent={<ReviewPost spot={spot} />}
-            />
+            />}
             {reviews.length > 0 && reviews.slice().reverse().map(review => {
                 const reviewMonth = review.createdAt.split("")[6]
                 const reviewMonth2 = review.createdAt.split("-")[1];
