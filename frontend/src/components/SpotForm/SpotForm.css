@@ -39,12 +39,12 @@
 
 .big-enter-box {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
 }
 
 .comma {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     margin-bottom: 13px;
     margin-left: 2px;
     width: 17px;

@@ -1,0 +1,51 @@
+.login-modal {
+    height: 280px;
+    width: 400px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-modal h2 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 7px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form input {
+    background-color: aliceblue;
+    margin: 5px 10px;
+    border: 2px solid black;
+}
+
+.login-form button {
+    margin: 10px 10px;
+    padding: 8px;
+    cursor: pointer;
+    background-color: rgb(242, 90, 90);
+    color: white;
+    box-shadow: 3px 3px black;
+}
+
+.login-form button:disabled {
+    background-color: white;
+    color: grey;
+    box-shadow: 3px 3px grey;
+    cursor: auto;
+}
+
+.login-modal h4 {
+    text-decoration: underline;
+    color: rgb(80, 80, 225);
+    text-align: center;
+    cursor: pointer;
+}
+
+.login-form p {
+    text-align: center;
+}

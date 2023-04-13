@@ -36,8 +36,8 @@ export default function SpotReviews({spot}) {
                 const reviewMonth = review.createdAt.split("")[6]
                 const reviewMonth2 = review.createdAt.split("-")[1];
                 let month;
-                if (reviewMonth2 < 10) month = months[reviewMonth]
-                if (reviewMonth2 >= 10) month = months[reviewMonth2]
+                if (reviewMonth2 < 10) month = months[reviewMonth-1]
+                if (reviewMonth2 >= 10) month = months[reviewMonth2-1]
                 const year = review.createdAt.split("-")[0]
                 return (
                     <div key={review.id}>

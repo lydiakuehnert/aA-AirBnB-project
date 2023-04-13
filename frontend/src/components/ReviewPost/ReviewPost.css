@@ -1,10 +1,55 @@
 .rating-input {
     display: flex;
     margin-right: 4px;
+    justify-content: center;
     align-items: center;
-    height: 20px;
+    height: 15px;
+    margin-bottom: 13px;
+}
+
+.rating-input h5 {
+    margin-left: 6px;
 }
 
 .errors {
     color: red;
+}
+
+.review-form-box {
+    height: 220px;
+    width: 400px;
+    border: 3px solid black;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.review-form-box h2 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 7px;
+}
+
+.review-form-box textarea {
+    height: 200px;
+    margin: 13px;
+    border: 2px solid black;
+    border-radius: 3px;
+    background-color: aliceblue;
+}
+
+.review-form-box button {
+    margin: 2px 10px;
+    padding: 8px;
+    cursor: pointer;
+    background-color: rgb(242, 90, 90);
+    color: white;
+    box-shadow: 3px 3px black;
+    margin-bottom: 10px;
+}
+
+.review-form-box button:disabled {
+    background-color: white;
+    color: grey;
+    box-shadow: 3px 3px grey;
 }
