@@ -1,0 +1,9 @@
+
+
+.all-spots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 auto;
+    justify-content: space-around;
+}

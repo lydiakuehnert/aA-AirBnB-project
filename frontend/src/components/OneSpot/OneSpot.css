@@ -1,0 +1,7 @@
+.spot-img-box {
+    display: flex;
+}
+
+.spot-img-box img {
+    width: 20%;
+}

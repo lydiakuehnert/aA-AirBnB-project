@@ -1,0 +1,10 @@
+.rating-input {
+    display: flex;
+    margin-right: 4px;
+    align-items: center;
+    height: 20px;
+}
+
+.errors {
+    color: red;
+}
