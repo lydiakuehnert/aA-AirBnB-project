@@ -34,10 +34,10 @@ export default function ReviewPost({ spot }) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h1>How was your stay?</h1>
+        <form onSubmit={handleSubmit} className="review-form-box">
+            <h2>How was your stay?</h2>
             {Object.values(errors).length > 0 && <p className="errors">{errors.message}</p>}
-            <input 
+            <textarea
                 type="text"
                 placeholder="Leave your review here..."
                 value={input}
