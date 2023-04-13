@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getReviewsThunk } from "../../store/reviews";
 import ReviewPost from "../ReviewPost";
 import OpenModalButton from "../OpenModalButton";
+import DeleteReview from "../DeleteReview";
 
 export default function SpotReviews({spot}) {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -45,6 +46,10 @@ export default function SpotReviews({spot}) {
                             {month} {year}
                         </h5>
                         <p>{review.review}</p>
+                        {sessionUser.id === review.userId && <OpenModalButton
+                            buttonText="Delete"
+                            modalComponent={<DeleteReview review={review} />}
+                        />}
                     </div>
                 )
             })}
