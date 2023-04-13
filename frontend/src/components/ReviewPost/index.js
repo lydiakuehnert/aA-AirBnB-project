@@ -13,9 +13,7 @@ export default function ReviewPost({ spot }) {
     const [activeRating, setActiveRating] = useState(rating);
     const [errors, setErrors] = useState({})
 
-
     const spotId = spot.id;
-
 
     const handleSubmit = async (e) => {
         e.preventDefault()

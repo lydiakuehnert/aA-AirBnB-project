@@ -41,8 +41,7 @@ export default function SpotReviews({spot}) {
                     <div key={review.id}>
                         <h4>{review.User && review.User.firstName}</h4>
                         <h5>
-                            {month}
-                            {year}
+                            {month} {year}
                         </h5>
                         <p>{review.review}</p>
                     </div>

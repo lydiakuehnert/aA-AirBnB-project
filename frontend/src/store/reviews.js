@@ -2,17 +2,8 @@ import { csrfFetch } from "./csrf";
 
 const GET_REVIEWS = "reviews/getReviews";
 const CREATE_REVIEW = "reviews/createReview";
-const GET_USER_REVIEWS = "reviews/getUserReviews";
 const DELETE_REVIEW = "reviews/deleteReview";
 
-
-
-const getUserReviewsAction = (reviews) => {
-    return {
-        type: GET_USER_REVIEWS,
-        reviews
-    }
-}
 
 const getReviewsAction = (reviews) => {
     return {
@@ -88,7 +79,6 @@ const reviewReducer = (state = initialState, action) => {
         case CREATE_REVIEW: {
             newState = { ...state, spot: { ...state.spot }, user: {} }
             newState.spot[action.review.id] = action.review;
-            // newState.singleSpot = action.spot;
             return newState
         }
         // case DELETE_SPOT: {
