@@ -14,7 +14,6 @@ export default function SpotReviews({spot}) {
 
     useEffect(() => {
         dispatch(getReviewsThunk(spot.id))
-        console.log("SESSION USER ++++++", sessionUser)
     }, [dispatch])
 
     if (!reviews) return null;
@@ -27,7 +26,8 @@ export default function SpotReviews({spot}) {
                 {spot.numReviews === 1 ? "review" : ""}
                 {spot.numReviews > 1 ? "reviews" : ""}
             </h1>
-            {sessionUser && sessionUser.id !== spot.Owner.id && <OpenModalButton
+            {sessionUser && sessionUser.id !== spot.Owner.id && !reviews.find(review => review.userId === sessionUser.id) &&
+            <OpenModalButton
                 buttonText="Post Your Review"
                 modalComponent={<ReviewPost spot={spot} />}
             />}
