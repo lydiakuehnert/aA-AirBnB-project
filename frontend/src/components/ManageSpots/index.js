@@ -19,7 +19,7 @@ export default function ManageSpots() {
 
     return (
         <div>
-            <h1>Manage Spots</h1>
+            <h1>Manage Your Spots</h1>
             {!spots.length && <button><NavLink exact to="/spots/new">Create a New Spot</NavLink></button>}
             <div className="user-spots">
                 {spots.length > 0 && spots.map(spot => (
