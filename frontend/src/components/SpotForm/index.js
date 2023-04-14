@@ -67,8 +67,8 @@ function SpotForm({spot, formType}) {
                     city: city1,
                     state: state1,
                     country: country1,
-                    lat: lat1,
-                    lng: lng1,
+                    lat: 25,
+                    lng: 25,
                     name: name1,
                     description: description1,
                     price: price1
