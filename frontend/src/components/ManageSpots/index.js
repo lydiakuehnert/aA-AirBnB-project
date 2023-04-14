@@ -25,7 +25,7 @@ export default function ManageSpots() {
                 {spots.length > 0 && spots.map(spot => (
                     <div className="user-spot-detail" key = {spot.id}>
                         <SpotCard spot={spot} />
-                        <button><NavLink exact to={`/spots/${spot.id}/edit`}>Update</NavLink></button>
+                        <button className="update-button"><NavLink exact to={`/spots/${spot.id}/edit`} className="update-link">Update</NavLink></button>
                         <OpenModalButton 
                             buttonText="Delete"
                             modalComponent={<DeleteSpot spot={spot} />}

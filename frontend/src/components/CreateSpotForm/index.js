@@ -12,6 +12,7 @@ const CreateSpotForm = () => {
         description: "",
         price: ""
     };
+    // refactor
 
     return (
         <SpotForm spot={spot} formType="Create a new Spot" />
