@@ -12,11 +12,14 @@ This site clones a couple of AirBnb features including the CRUD for spots and re
 
 ## Technologies Used:
 
-1. Express 
+1. Express.js
 2. Sequelize
 3. React
 4. Redux
 5. Javascript
+6. HTML5
+7. CSS
+8. Node.js
 
 
 ## Future Features:
