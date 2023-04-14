@@ -1,1 +1,8 @@
 /* TODO Add site wide styles */
+img {
+    border-radius: 4px;
+}
+
+* {
+    font-family: 'Roboto', sans-serif;
+}

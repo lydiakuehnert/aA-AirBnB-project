@@ -4,6 +4,7 @@ import { getReviewsThunk } from "../../store/reviews";
 import ReviewPost from "../ReviewPost";
 import OpenModalButton from "../OpenModalButton";
 import DeleteReview from "../DeleteReview";
+import "./SpotReviews.css";
 
 export default function SpotReviews({spot}) {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -32,6 +33,7 @@ export default function SpotReviews({spot}) {
             {sessionUser && sessionUser.id !== spot.Owner.id && !reviews.find(review => review.userId === sessionUser.id) &&
             <OpenModalButton
                 buttonText="Post Your Review"
+                className="modal-post-review"
                 modalComponent={<ReviewPost spot={spot} />}
             />}
             {!reviews.length && sessionUser && sessionUser.id!== spot.Owner.id && <h5>Be the first to post a review!</h5>}
@@ -43,7 +45,7 @@ export default function SpotReviews({spot}) {
                 if (reviewMonth2 >= 10) month = months[reviewMonth2-1]
                 const year = review.createdAt.split("-")[0]
                 return (
-                    <div key={review.id}>
+                    <div key={review.id} className="one-review-box">
                         <h4>{review.User && review.User.firstName}</h4>
                         <h5>
                             {month} {year}
