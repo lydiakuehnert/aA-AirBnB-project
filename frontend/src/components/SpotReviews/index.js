@@ -51,7 +51,7 @@ export default function SpotReviews({spot}) {
                         <p>{review.review}</p>
                         {sessionUser.id === review.userId && <OpenModalButton
                             buttonText="Delete"
-                            modalComponent={<DeleteReview review={review} />}
+                            modalComponent={<DeleteReview review={review} spotId={spot.id}/>}
                         />}
                     </div>
                 )
