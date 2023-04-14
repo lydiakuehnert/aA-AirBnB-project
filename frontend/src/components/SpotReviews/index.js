@@ -18,6 +18,7 @@ export default function SpotReviews({spot}) {
     }, [dispatch])
 
     if (!reviews) return null;
+    if (!spot) return null;
     if (!spot.Owner) return null;
 
     return (
