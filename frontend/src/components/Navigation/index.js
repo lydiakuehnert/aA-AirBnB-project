@@ -13,8 +13,8 @@ function Navigation({ isLoaded }) {
                 <NavLink id="logo" exact to="/">AirRnR</NavLink>
             </li>
             {isLoaded && (
-                <li>
-                    {sessionUser && <NavLink exact to="/spots/new">Create a New Spot</NavLink>}
+                <li className='li-nav-bar'>
+                    {sessionUser && <NavLink exact to="/spots/new" className="create-spot-link">Create a New Spot</NavLink>}
                     <ProfileButton user={sessionUser} />
                 </li>
             )}

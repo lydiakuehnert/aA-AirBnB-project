@@ -7,6 +7,7 @@
 .spot-img-box > img {
     width: 500px;
     max-height: 500px;
+    object-fit: cover;
 }
 
 .nested-img-box {
@@ -19,6 +20,7 @@
 .nested-img-box > img {
     width: 100%;
     max-height: 250px;
+    object-fit: cover;
 }
 
 
