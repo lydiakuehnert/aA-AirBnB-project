@@ -43,8 +43,13 @@ function SpotForm({spot, formType}) {
         if (price1.length < 1) err.price1 = "Price is required";
         if (isNaN(price1)) err.price1 = "Price must be a number."; 
         if (url1.length < 1 && formType === "Create a new Spot") err.url1 = "Preview image is required."
+        if (!url1.includes(".png") && !url1.includes(".jpg") && !url1.includes(".jpeg")) err.url1 = "Image URL must end in .png, .jpg, or .jpeg."
+        if (url2 !== "" && !url2.includes(".png") && !url2.includes(".jpg") && !url2.includes(".jpeg")) err.url2 = "Image URL must end in .png, .jpg, or .jpeg."
+        if (url3 !== "" && !url3.includes(".png") && !url3.includes(".jpg") && !url3.includes(".jpeg")) err.url3 = "Image URL must end in .png, .jpg, or .jpeg."
+        if (url4 !== "" && !url4.includes(".png") && !url4.includes(".jpg") && !url4.includes(".jpeg")) err.url4 = "Image URL must end in .png, .jpg, or .jpeg."
+        if (url5 !== "" && !url5.includes(".png") && !url5.includes(".jpg") && !url5.includes(".jpeg")) err.url5 = "Image URL must end in .png, .jpg, or .jpeg."
         setErrors(err)
-    }, [name1, address1, city1, country1, state1, lat1, lng1, description1, price1, url1])
+    }, [name1, address1, city1, country1, state1, lat1, lng1, description1, price1, url1, url2, url3, url4, url5])
 
     const errorClass = "errors" + (displayErrors ? '' : 'hide')
 
@@ -259,24 +264,28 @@ function SpotForm({spot, formType}) {
                     placeholder="Image URL"
                     onChange={e => setUrl2(e.target.value)}
                 />
+                {formType === "Create a new Spot" && displayErrors && errors.url2 && <p className={errorClass}>{errors.url2}</p>}
                 <input
                     type="text"
                     value={url3}
                     placeholder="Image URL"
                     onChange={e => setUrl3(e.target.value)}
                 />
+                {formType === "Create a new Spot" && displayErrors && errors.url3 && <p className={errorClass}>{errors.url3}</p>}
                 <input
                     type="text"
                     value={url4}
                     placeholder="Image URL"
                     onChange={e => setUrl4(e.target.value)}
                 />
+                {formType === "Create a new Spot" && displayErrors && errors.url4 && <p className={errorClass}>{errors.url4}</p>}
                 <input
                     type="text"
                     value={url5}
                     placeholder="Image URL"
                     onChange={e => setUrl5(e.target.value)}
                 />
+                {formType === "Create a new Spot" && displayErrors && errors.url5 && <p className={errorClass}>{errors.url5}</p>}
             </section>}
             <button
                 type="submit"
