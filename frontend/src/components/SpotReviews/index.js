@@ -18,9 +18,9 @@ export default function SpotReviews({spot}) {
         dispatch(getReviewsThunk(spot.id))
     }, [dispatch])
 
-    if (reviews.length < 1) return <p>Loading...</p>;
+    if (!reviews) return <p>Loading...</p>;
     if (!spot) return <p>Loading...</p>;
-    if (!spot.Owner) return <p>Loading...</p>;
+    if (!spot.Owner) return <p> Loading...</p>;
 
     return (
         <div className="spot-reviews">

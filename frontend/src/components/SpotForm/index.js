@@ -41,6 +41,7 @@ function SpotForm({spot, formType}) {
         if (lng1.length < 1) err.lng1 = "Longitude is required";
         if (description1.length < 30) err.description1 = "Description needs a minimum of 30 characters";
         if (price1.length < 1) err.price1 = "Price is required";
+        if (isNaN(price1)) err.price1 = "Price must be a number."; 
         if (url1.length < 1 && formType === "Create a new Spot") err.url1 = "Preview image is required."
         setErrors(err)
     }, [name1, address1, city1, country1, state1, lat1, lng1, description1, price1, url1])
