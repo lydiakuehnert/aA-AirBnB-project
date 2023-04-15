@@ -141,7 +141,7 @@ function SpotForm({spot, formType}) {
                 
                 </div>
                 <div className="big-enter-box">
-                    <div className="enter-box">
+                    <div className="enter-box" id="city-box">
                         <div className="enter-label">
                             <label>City</label>
                             {displayErrors && errors.city1 && <p className={errorClass}>{errors.city1}</p>}
@@ -155,7 +155,7 @@ function SpotForm({spot, formType}) {
                             />
                     </div>
                     <div className="comma">,</div>
-                    <div className="enter-box">
+                    <div className="enter-box" id="state-box">
                         <div className="enter-label">
                             <label>State</label>
                             {displayErrors && errors.state1 && <p className={errorClass}>{errors.state1}</p>}
@@ -170,7 +170,7 @@ function SpotForm({spot, formType}) {
                     </div>
                 </div>
                 <div className="big-enter-box">
-                    <div className="enter-box">
+                    <div className="enter-box" id="lat-box">
                         <div className="enter-label">
                             <label>Latitude</label>
                             {displayErrors && errors.lat1 && <p className={errorClass}>{errors.lat1}</p>}
@@ -184,7 +184,7 @@ function SpotForm({spot, formType}) {
                             />
                     </div>
                     <div className="comma">,</div>
-                    <div className="enter-box">
+                    <div className="enter-box" id="lng-box">
                         <div className="enter-label">
                             <label>Longitude</label>
                             {displayErrors && errors.lng1 && <p className={errorClass}>{errors.lng1}</p>}
@@ -204,7 +204,8 @@ function SpotForm({spot, formType}) {
                 <h3>Describe your place to guests</h3>
                 <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
                 <label>
-                    <input
+                    <textarea
+                        id="description-input" rows="20" cols="50"
                         type="text"
                         value={description1}
                         placeholder="Please write at least 30 characters"
@@ -218,6 +219,7 @@ function SpotForm({spot, formType}) {
                 <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
                 <label>
                     <input
+                        id="title-input"
                         type="text"
                         value={name1}
                         placeholder="Name of your spot"
@@ -231,6 +233,7 @@ function SpotForm({spot, formType}) {
                 <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
                 <label> $
                     <input
+                        id="price-input-field"
                         type="text"
                         value={price1}
                         placeholder="Price per night (USD)"
@@ -239,7 +242,7 @@ function SpotForm({spot, formType}) {
                 </label>
                 {displayErrors && errors.price1 && <p className={errorClass}>{errors.price1}</p>}
             </section>
-            {formType === "Create a new Spot" && <section className="form-section">
+            {formType === "Create a new Spot" && <section className="form-section" id="photo-section">
                 <h3>Liven up your spot with photos</h3>
                 <p>Submit a link to at least one photo to publish your spot.</p>
                 <input
