@@ -1,7 +1,12 @@
 .spot-card {
     display: flex;
     flex-direction: column;
-    width: 200px;
+    width: 210px;
+}
+
+.spot-card-link {
+    text-decoration: none;
+    color: black;
 }
 
 .spot-details {
@@ -10,11 +15,11 @@
     font-size: small;
 }
 
-.spot-place {
-    text-decoration: none;
-}
-
 .spot-card img {
     height: 200px;
     width: 100%;
+}
+
+.spot-card h4 {
+    margin-top: 0;;
 }
