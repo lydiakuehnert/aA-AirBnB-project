@@ -18,9 +18,9 @@ export default function SpotReviews({spot}) {
         dispatch(getReviewsThunk(spot.id))
     }, [dispatch])
 
-    if (!reviews) return null;
-    if (!spot) return null;
-    if (!spot.Owner) return null;
+    if (reviews.length < 1) return <p>Loading...</p>;
+    if (!spot) return <p>Loading...</p>;
+    if (!spot.Owner) return <p>Loading...</p>;
 
     return (
         <div className="spot-reviews">
@@ -36,7 +36,7 @@ export default function SpotReviews({spot}) {
                 className="modal-post-review"
                 modalComponent={<ReviewPost spot={spot} />}
             />}
-            {!reviews.length && sessionUser && sessionUser.id!== spot.Owner.id && <h5>Be the first to post a review!</h5>}
+            {sessionUser && !reviews.length && sessionUser.id !== spot.Owner.id && <h5>Be the first to post a review!</h5>}
             {reviews.length > 0 && reviews.slice().reverse().map(review => {
                 const reviewMonth = review.createdAt.split("")[6]
                 const reviewMonth2 = review.createdAt.split("-")[1];
@@ -51,7 +51,7 @@ export default function SpotReviews({spot}) {
                             {month} {year}
                         </h5>
                         <p>{review.review}</p>
-                        {sessionUser.id === review.userId && <OpenModalButton
+                        {sessionUser && sessionUser.id === review.userId && <OpenModalButton
                             buttonText="Delete"
                             modalComponent={<DeleteReview review={review} spotId={spot.id}/>}
                         />}
