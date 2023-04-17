@@ -108,10 +108,6 @@ function SpotForm({spot, formType}) {
         }
     }
 
-
-    if (!spot) return null;
-    if (!formType) return null;
-
     
 
     return (

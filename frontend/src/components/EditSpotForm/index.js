@@ -6,6 +6,8 @@ const EditSpotForm = () => {
     const { spotId } = useParams();
     const spot = useSelector(state => state.spots.allSpots[spotId]);
 
+    if (!spot) return null;
+
     return (
         <SpotForm spot={spot} formType="Update your Spot" />
     );
