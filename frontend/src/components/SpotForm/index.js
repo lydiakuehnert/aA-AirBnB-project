@@ -108,6 +108,10 @@ function SpotForm({spot, formType}) {
         }
     }
 
+
+    if (!spot) return null;
+    if (!formType) return null;
+
     
 
     return (
@@ -235,7 +239,7 @@ function SpotForm({spot, formType}) {
                 {displayErrors && errors.name1 && <p className={errorClass}>{errors.name1}</p>}
             </section>
             <section className="form-section">
-                <h3>Set a base price for you spot</h3>
+                <h3>Set a base price for your spot</h3>
                 <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
                 <label> $
                     <input
@@ -290,7 +294,7 @@ function SpotForm({spot, formType}) {
             <button
                 type="submit"
             >
-                CreateSpot
+                Create Spot
             </button>
         </form>
     );
