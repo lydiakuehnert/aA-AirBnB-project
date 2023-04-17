@@ -43,11 +43,11 @@ function SpotForm({spot, formType}) {
         if (price1.length < 1) err.price1 = "Price is required";
         if (isNaN(price1)) err.price1 = "Price must be a number."; 
         if (url1.length < 1 && formType === "Create a new Spot") err.url1 = "Preview image is required."
-        if (!url1.includes(".png") && !url1.includes(".jpg") && !url1.includes(".jpeg")) err.url1 = "Image URL must end in .png, .jpg, or .jpeg."
-        if (url2 !== "" && !url2.includes(".png") && !url2.includes(".jpg") && !url2.includes(".jpeg")) err.url2 = "Image URL must end in .png, .jpg, or .jpeg."
-        if (url3 !== "" && !url3.includes(".png") && !url3.includes(".jpg") && !url3.includes(".jpeg")) err.url3 = "Image URL must end in .png, .jpg, or .jpeg."
-        if (url4 !== "" && !url4.includes(".png") && !url4.includes(".jpg") && !url4.includes(".jpeg")) err.url4 = "Image URL must end in .png, .jpg, or .jpeg."
-        if (url5 !== "" && !url5.includes(".png") && !url5.includes(".jpg") && !url5.includes(".jpeg")) err.url5 = "Image URL must end in .png, .jpg, or .jpeg."
+        if (!url1.includes(".png") && !url1.includes(".jpg") && !url1.includes(".jpeg") && formType === "Create a new Spot") err.url1 = "Image URL must end in .png, .jpg, or .jpeg."
+        if (url2 !== "" && !url2.includes(".png") && !url2.includes(".jpg") && !url2.includes(".jpeg") && formType === "Create a new Spot") err.url2 = "Image URL must end in .png, .jpg, or .jpeg."
+        if (url3 !== "" && !url3.includes(".png") && !url3.includes(".jpg") && !url3.includes(".jpeg") && formType === "Create a new Spot") err.url3 = "Image URL must end in .png, .jpg, or .jpeg."
+        if (url4 !== "" && !url4.includes(".png") && !url4.includes(".jpg") && !url4.includes(".jpeg") && formType === "Create a new Spot") err.url4 = "Image URL must end in .png, .jpg, or .jpeg."
+        if (url5 !== "" && !url5.includes(".png") && !url5.includes(".jpg") && !url5.includes(".jpeg") && formType === "Create a new Spot") err.url5 = "Image URL must end in .png, .jpg, or .jpeg."
         setErrors(err)
     }, [name1, address1, city1, country1, state1, lat1, lng1, description1, price1, url1, url2, url3, url4, url5])
 
@@ -87,6 +87,7 @@ function SpotForm({spot, formType}) {
         } else {
             if (Object.values(errors).length > 0) {
                 setDisplayErrors(true)
+                console.log("BUTTON PUSHED ==========")
             }
             else {
                 let newSpot = {
@@ -101,7 +102,6 @@ function SpotForm({spot, formType}) {
                     description: description1,
                     price: price1
                 }
-
                 const editedSpot = await dispatch(editSpotThunk({ newSpot, SpotImages }));
                 history.push(`/spots/${editedSpot.id}`)
             }
@@ -235,7 +235,7 @@ function SpotForm({spot, formType}) {
                 {displayErrors && errors.name1 && <p className={errorClass}>{errors.name1}</p>}
             </section>
             <section className="form-section">
-                <h3>Set a base price for you spot</h3>
+                <h3>Set a base price for your spot</h3>
                 <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
                 <label> $
                     <input
@@ -290,7 +290,7 @@ function SpotForm({spot, formType}) {
             <button
                 type="submit"
             >
-                CreateSpot
+                Create Spot
             </button>
         </form>
     );
